@@ -1,0 +1,67 @@
+[ {
+
+	"name": { "nickname": "", "full": "" },
+	
+	"security": {
+		"passcode": { "encryption": "", "custom_salt": "" },
+		"role": "",
+		"suspect": ""
+	},
+	
+	"activity": [
+		{
+			"ip": "",
+			"referer": "",
+			"page": "",
+			"state": "",
+			"timestamp": "",
+			"security": "",
+			"response": ""
+		}
+	],
+	
+	"journal": [
+		{
+			"keywords": [],
+			"subject": "",
+			"body": "",
+			"publisher": { "date": "", "author": "", "visibility": "" },
+			"target": { "forum": "", "thread": "", "post": "" }
+		}
+	],
+	
+	"ledger": [
+		{
+			"subscriptions": "",
+			"purchases": "",
+			"preorders": "",
+			"downloads": "",
+			"uploads": ""
+		}
+	],
+	
+	"digital": {
+		"phone": [ { "line": "main", "ptn": "" } ],
+		"email": "",
+		"networking": {
+			"website": "",
+			"facebook": "",
+			"twitter": "",
+			"youtube": "",
+			"tumblr": "",
+			"instagram": "",
+			"tiktok": ""
+		}
+	},
+	
+	"physical": {
+		"street": "",
+		"city": "",
+		"state": "",
+		"country": "",
+		"zip_code": "",
+		"postal_code": "",
+		"coordinates": { "latitude": "", "longitude": "", "altitude": "" }
+	}
+
+} ]
