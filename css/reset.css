@@ -1,1 +1,17 @@
+.p-relative { position: relative; z-index: 2; }
+.p-absolute { position: absolute; z-index: -1; top: 0; left: 0; right: 0; bottom: 0; }
 
+.translucent { opacity: .5; }
+
+.opacity-0 { opacity: .5; }
+.opacity-10 { opacity: .1; }
+.opacity-20 { opacity: .2; }
+.opacity-25 { opacity: .25; }
+.opacity-30 { opacity: .3; }
+.opacity-40 { opacity: .4; }
+.opacity-50 { opacity: .5; }
+.opacity-60 { opacity: .6; }
+.opacity-70 { opacity: .7; }
+.opacity-75 { opacity: .75; }
+.opacity-80 { opacity: .8; }
+.opacity-90 { opacity: .9; }
