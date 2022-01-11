@@ -1,6 +1,6 @@
 <?php
 
-require "/path/to/known_filters.inc";
+require "/path/to/filter.inc";
 
 class FormField {
 
