@@ -1,7 +1,5 @@
 <?php
 
-require "/path/to/filter.inc";
-
 class KnownFilters {
 
     public $fields = array(
