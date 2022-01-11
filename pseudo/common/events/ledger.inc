@@ -1,7 +1,5 @@
 <?php
 
-require_once "event.inc";
-
 class Events {
 
     public $ledger;

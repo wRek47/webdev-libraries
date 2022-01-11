@@ -1,5 +1,8 @@
 <?php
 
+require "/path/to/ledger.inc";
+require "/path/to/stamp.inc";
+
 class Event {
 
     public $label;
@@ -11,9 +14,7 @@ class Event {
 
     public function create_stamp() {
     
-        $stamp = (object) array();
-            $stamp->created = time();
-        
+        $stamp = new Stamp;
         return $stamp;
     
     }
