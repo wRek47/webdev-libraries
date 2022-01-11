@@ -1,0 +1,8 @@
+[
+    { "field": "name", "method": "regex", "value": "" },
+    { "field": "email", "method": "filter_var" },
+    { "field": "url", "method": "regex", "value": "" },
+    { "field": "website", "method": "xss" },
+    { "field": "range-limit", "method": "{function}" },
+    { "field": "plain-text", "method": "{function}" }
+]
