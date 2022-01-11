@@ -5,6 +5,9 @@ class Voter {
     public $signature;
     public $votes;
 
+    public $name;
+    public $ip;
+
     public function __construct($profile = null) {
     
         if (!is_null($profile)): $profile = $this->default_voter(); endif;
