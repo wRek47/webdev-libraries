@@ -1,23 +1,22 @@
 <?php
 
-class Voter {
+class MailBox {
 
-    public $signature;
-    public $votes;
+    public $title;
 
-    public $name;
-    public $ip;
+    public $unread;
+    public $messages;
 
     public function __construct($profile = null) {
     
-        if (!is_null($profile)): $profile = $this->default_voter(); endif;
-
+        if (!is_null($profile)): $profile = $this->default_user(); endif;
+        
         $this->name = $profile->name;
         $this->ip = $profile->ip;
     
     }
 
-    public function default_voter() {
+    public function default_user() {
     
         $profile = (object) array();
 
