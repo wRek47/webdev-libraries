@@ -15,7 +15,7 @@ class Message {
     public function get_mail() {
     
         $this->find_message();
-        # read mail
+        $this->read_mail();
     
     }
 
@@ -38,7 +38,7 @@ class Message {
         
         endif;
 
-        $statement->bindParam(":receiver", $profile->target);
+        $statement->bindParam(":receiver", $profile->handle);
         $data = $statement->fetch_result(); unset($statement);
 
         $this->sender = $data['sender'];
@@ -52,23 +52,37 @@ class Message {
     
     }
 
-    public function read_mail($message) {
+    public function read_mail($message = null) {
     
         global $profile;
 
         $stamp = new Stamp;
             $stamp->target = "read";
-            $stamp->profile = $profile->target;
+            $stamp->profile = $profile->handle;
         
-        array_push($message->log, $stamp); unset($stamp);
+        $log = (is_null($message)) ? $this->log : $message->log;
+        array_push($log, $stamp); unset($stamp);
     
     }
 
     public function send_mail() {
 
+        global $pdo;
+
         if (isset($_POST['message'])):
         
             # send mail
+            $sql = "INSERT INTO `messages`(`sender`, `receiver`, `cc`, `log`, `thread`, `subject`, `body`) VALUES(:sender, :receiver, :cc, :log, :thread, :title, :msg)";
+
+            $statement = $pdo->prepare($sql);
+                $statement->bindParam(":sender", $this->sender);
+                $statement->bindParam(":receiver", $this->receiver);
+                $statement->bindParam(":cc", serialize($this->cc));
+                $statement->bindParam(":log", serialize($this->log));
+                $statement->bindParam(":thread", $this->thread);
+                $statement->bindParam(":title", $this->subject);
+                $statement->bindParam(":msg", $this->body);
+            $statement->execute();
         
         endif;
     

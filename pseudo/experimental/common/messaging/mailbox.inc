@@ -1,5 +1,13 @@
 <?php
 
+# $pdo = new PDO;
+
+$profile = (object) array();
+
+    $profile->handle = "anonymous#" . rand(0, 5000);
+    $profile->name = "Guest";
+    $profile->ip = $_SERVER['REMOTE_ADDR'];
+
 class MailBox {
 
     public $title;
@@ -25,7 +33,7 @@ class MailBox {
             
                 if (isset($stamp->target) AND isset($stamp->profile)):
                 
-                    if ($stamp->target == "read" AND $stamp->profile == $profile->target): $total++; endif;
+                    if ($stamp->target == "read" AND $stamp->profile == $profile->handle): $total++; endif;
                 
                 endif;
             
@@ -34,17 +42,6 @@ class MailBox {
         endforeach; unset($message);
 
         $this->unread = $total;
-    
-    }
-
-    public function default_user() {
-    
-        $profile = (object) array();
-
-            $profile->name = "Guest";
-            $profile->ip = $_SERVER['REMOTE_ADDR'];
-
-        return $profile;
     
     }
 
