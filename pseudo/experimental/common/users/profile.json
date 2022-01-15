@@ -3,9 +3,9 @@
 	"name": { "nickname": "", "full": "" },
 	
 	"security": {
-		"passcode": { "encryption": "", "custom_salt": "" },
+		"passcode": { "stack": "", "custom_salt": "", "encryption": "" },
 		"role": "",
-		"suspect": ""
+		"points": ""
 	},
 	
 	"activity": [
