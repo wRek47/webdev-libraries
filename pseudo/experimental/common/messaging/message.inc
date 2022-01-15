@@ -67,11 +67,24 @@ class Message {
 
     public function send_mail() {
 
-        global $pdo;
+        global $pdo, $profile;
+
+        $this->sender = $profile->handle;
+
+        $this->receiver = $_POST['receiver'];
+        $this->cc = $_POST['cc'];
+
+        $this->subject = $_POST['subject'];
+        $this->body = $_POST['body'];
+        $this->thread = null;
 
         if (isset($_POST['message'])):
         
-            # send mail
+            $stamp = new Stamp;
+                $stamp->target = "sent";
+            
+            array_push($this->log, $stamp); unset($stamp);
+            
             $sql = "INSERT INTO `messages`(`sender`, `receiver`, `cc`, `log`, `thread`, `subject`, `body`) VALUES(:sender, :receiver, :cc, :log, :thread, :title, :msg)";
 
             $statement = $pdo->prepare($sql);
@@ -83,6 +96,20 @@ class Message {
                 $statement->bindParam(":title", $this->subject);
                 $statement->bindParam(":msg", $this->body);
             $statement->execute();
+
+            if (isset($profile->notifications->messaging)):
+            
+                if ($profile->notifications->messaging == "email" AND isset($profile->portfolio->email)):
+                
+                    # send email
+                
+                elseif ($profile->notifications->messaging == "sms" AND isset($profile->portfolio->sms)):
+                
+                    # send sms
+                
+                endif;
+            
+            endif;
         
         endif;
     
