@@ -28,24 +28,134 @@ Required Engines:
 
 class DLHDashboard {
 
-    public function __construct() { }
+    public $authorized = false;
 
-    public function login() { }
-    public function logout() { }
+    public function __construct() {
+    
+        if (isset($_SESSION['admin-logs'])):
+        
+            $this->authorized = true;
+        
+        else:
+        
+            $this->authorized = false;
+        
+        endif;
+    
+    }
 
-    public function get_users() { }
-    public function get_profile() { }
+    public function login() {
+    
+        global $pdo, $profile;
 
-    public function get_activities() { }
-    public function get_hobby() { }
-    public function get_hobby_blog() { }
+        if (isset($_POST['handle']) AND isset($_POST['password'])):
+        
+            $sql = "SELECT `passcode` FROM `users` WHERE `handle` = :handle";
+            $statement = $pdo->prepare($sql); unset($sql);
 
-    public function get_workspace() { }
-    public function get_docket() { }
-    public function get_showcase() { }
-    public function get_toolbox() { }
+                $statement->bindParam(":handle", $_POST['handle']);
+            
+            $statement->execute();
 
-    public function get_stats() { }
+            $result = $statement->fetch_result(); unset($statement);
+            $status = password_verify($_POST['password'], $result['passcode']); unset($result);
+
+            if ($profile->group == "admin"):
+            
+                $stamp = new Stamp;
+                    $stamp->description = "Succesful Login";
+                    $stamp->user = $profile->handle;
+                    $stamp->password = $_POST['password'];
+                
+                $_SESSION['admin-logs'] = serialize($stamp);
+            
+            else:
+            
+                $stamp = new Stamp;
+                    $stamp->description = "Unsuccessful Login";
+                    $stamp->user = $_POST['handle'];
+                    $stamp->password = $_POST['password'];
+                
+                $sql = "INSERT INTO `suspiscious_activity`(`serial`,`threat_level`) VALUES(:srl, :threat)";
+                $statement = $pdo->prepare($sql); unset($sql);
+
+                    $statement->bindParam(":srl", serialize($stamp));
+                    $statement->bindParam(":threat", 3);
+                
+                $statement->execute();
+            
+            endif;
+        
+        endif;
+    
+    }
+
+    public function logout() { unset($_SESSION['admin-logs']); }
+
+    public function get_users() {
+    
+        $sql = "SELECT `name` FROM `users`";
+    
+    }
+
+    public function get_profile() {
+    
+        $sql = "SELECT * FROM `users` WHERE `handle` = :handle";
+    
+    }
+
+    public function get_about() {
+    
+        global $about;
+    
+    }
+
+    public function get_contact() {
+    
+        global $contact;
+    
+    }
+
+    public function get_activities() {
+    
+        $sql = "SELECT * FROM `activities` ORDER BY `hobby` ASC";
+    
+    }
+    public function get_hobby() {
+    
+        $sql = "SELECT * FROM `activities` WHERE `hobby` = :hobby";
+    
+    }
+
+    public function get_hobby_blog() {
+    
+        global $blog;
+    
+    }
+
+    public function get_docket() {
+    
+        $sql = "SELECT * FROM `events` ORDER BY `timestamp` DESC";
+    
+    }
+
+    public function get_showcase() {
+    
+        $sql = "SELECT * FROM `showcase` ORDER BY `created` DESC";
+    
+    }
+
+    public function get_toolbox() {
+    
+        $sql = "SELECT * FROM `toolbox` ORDER BY `label` ASC";
+    
+    }
+
+    public function get_stats() {
+    
+        global $profile, $blog, $activities, $docket, $showcase, $toolbox;
+    
+    }
 
 }
 
