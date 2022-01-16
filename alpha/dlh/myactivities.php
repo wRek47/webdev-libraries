@@ -2,29 +2,35 @@
 
 /*
 
-	DLH - My Portfolio > My Activities
-	
-	This engine is built around transforming the existing JSON data-models to SQL data-models
-	Upgrades include:
-		Hobby-Data Centralization
-		Hobby Management Tools
-		Blog/Sharing
-		Blog Management Tools
-		Trending Articles
-		Hobby/Activity Search
-	
-	Features include:
-		PUG/Markdown/BBCode Support
-		Custom Apps
-	
-	Required Connections:
-		MySQL, PDO
-	
-	Require Engines:
-		Profile
-		Events
+DLH - My Portfolio > My Activities
+
+v0.2.1
+
+This engine is built around transforming the existing JSON data-models to SQL data-models
+
+Upgrades include:
+	Hobby-Data Centralization
+	Hobby Management Tools
+	Blog/Sharing
+	Blog Management Tools
+	Trending Articles
+	Hobby/Activity Search
+
+Features include:
+	JSON?/HTML/Markdown/BBCode Support
+	Custom Apps
+
+Required Connections:
+	MySQL, PDO
+
+Require Engines:
+	Profile
+	Events
 
 */
+
+class HTML { public function read() { } }
+class Parsedown { public function read() { } }
 
 class HobbyBlog {
 
@@ -61,6 +67,142 @@ class HobbyBlog {
 		global $profile;
 	
 	}
+
+    private function sanitize_body() {
+    
+        $result = false;
+
+        if ($_POST['attributes']['use_bbcode']):
+        
+            $bbcode_tags = array();
+            $html_tags = array();
+
+            $result = str_replace($bbcode_tags, $html_tags, $_POST['body']);
+        
+        elseif ($_POST['attributes']['use_markdown']):
+        
+            $markdown = new Parsedown;
+            $result = $markdown->read($_POST['body']);
+        
+        elseif ($_POST['attributes']['use_html']):
+        
+            $html = new HTML;
+            $result = $html->read($_POST['body']);
+        
+        elseif ($_POST['attributes']['use_json']):
+        
+            /* $json = new JSON;
+            $result = $json->read($_POST['body']); */
+
+            /* > */
+            define("PHP_TAB", "\t");
+            define("PHP_TAB1", "\t");
+            define("PHP_TAB2", "\t\t");
+            define("PHP_TAB3", "\t\t\t");
+            define("PHP_TAB4", "\t\t\t\t");
+
+            $data_object = json_decode($_POST['body']);
+            $body = '<section>' . PHP_EOL;
+
+            foreach ($data_object as $key => $value):
+            
+                if (is_object($value)):
+                
+                    $body .= PHP_TAB . '<h1>' . $key . '</h1>';
+                    foreach ($value as $key2 => $value2):
+                    
+                        // repeat through h6
+                    
+                    endforeach; unset($key2, $value2);
+                
+                elseif (is_array($value)):
+                
+                    $first = reset($value);
+                    $list = (is_numeric(key($first))) ? "ordered" : "unordered"; unset($first);
+                    
+                    if ($list == "ordered"): $body .= PHP_TAB1 . '<ol>' . PHP_EOL;
+                    elseif ($list == "unordered"): $body .= PHP_TAB1 . '<ul>' . PHP_EOL;
+                    elseif ($list == "definition"): $body .= PHP_TAB1 . '<dl>' . PHP_EOL;
+                    endif;
+
+                    foreach ($value as $key2 => $value2):
+                    
+                        // collapsible / dropdown list?
+                        
+                        if (is_object($value2)):
+                        
+                            $body .= PHP_TAB2 . '<li>' . PHP_EOL;
+                            if ($list == "unordered"):
+                                $body .= PHP_TAB3 . '<h3>' . $key2 . '</h3>' . PHP_EOL;
+                            endif;
+                            $body .= PHP_TAB3 . '<article>' . PHP_EOL;
+
+                            foreach ($value2 as $key3 => $value3):
+                            
+                                $first = reset($value2);
+                                $list2 = (is_numeric(key($key))) ? "ordered" : "unordered"; unset($first);
+                                
+                                if ($list == "unordered"):
+                                    $body .= PHP_TAB4 . '<h3>' . $key3 . '</h3>' . PHP_EOL;
+                                endif;
+
+                                if (is_object($value3)):
+                                elseif (is_array($value3)):
+                                elseif (is_string($value3)):
+                                
+                                    $body .= PHP_TAB4 . '<p>' . $value3 . '</p>' . PHP_EOL;
+                                
+                                endif;
+                            
+                            endforeach; unset($key3, $value3);
+
+                            $body .= PHP_TAB3 . '</article>' . PHP_EOL;
+                            $body .= PHP_TAB2 . '</li>' . PHP_EOL;
+                        
+                        elseif (is_array($value2)):
+                        
+                        elseif (is_string($value2)):
+                        
+                            if (str_contains($list, "ordered")): $body .= PHP_TAB2 . '<li>' . PHP_EOL;
+                            elseif ($list == "definition"): $body .= PHP_TAB2 . '<dd>' . PHP_EOL;
+                            endif;
+
+                            $body .= PHP_TAB2 . '<li>' . $value . '</li>' . PHP_EOL;
+
+                            if (str_contains($list, "ordered")): $body .= PHP_TAB2 . '</li>' . PHP_EOL;
+                            elseif ($list == "definition"): $body .= PHP_TAB2 . '</dd>' . PHP_EOL;
+                            endif;
+                        
+                        endif;
+                    
+                    endforeach;
+                    
+                    if ($list == "ordered"): $body .= PHP_TAB1 . '</ol>' . PHP_EOL;
+                    elseif ($list == "unordered"): $body .= PHP_TAB1 . '</ul>' . PHP_EOL;
+                    elseif ($list == "definition"): $body .= PHP_TAB1 . '</dl>' . PHP_EOL;
+                    endif;
+                
+                elseif (is_string($value)):
+                
+                    $body .= PHP_TAB1 . '<p>' . $value . '</p>' . PHP_EOL;
+                
+                endif;
+            
+            endforeach; unset($key, $value);
+
+            $body .= '</section>' . PHP_EOL;
+        
+        else:
+        
+            $result = htmlspecialchars(trim($_POST['body']));
+        
+        endif;
+
+        $safe = $result;
+
+        return $safe;
+    
+    }
 	
 	public function comment() {
 	
@@ -71,8 +213,7 @@ class HobbyBlog {
 		if (!$this->guests_can_comment): return false; endif;
 		
 		$comment->author = $profile->portfolio->name;
-		
-		$comment->body = $_POST['body'];
+		$comment->body = $this->sanitize_body();
 				
 		$comment->timestamp = time();
 				
