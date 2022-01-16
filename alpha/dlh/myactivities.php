@@ -3,7 +3,6 @@
 /*
 
 DLH - My Portfolio > My Activities
-
 v0.2.1
 
 This engine is built around transforming the existing JSON data-models to SQL data-models
