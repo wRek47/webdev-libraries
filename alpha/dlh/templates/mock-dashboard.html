@@ -1,26 +1,102 @@
+<!-- ? $page = $active->page->content; ? -->
 <section>
-    <aside>
-        <!-- sidebar -->
-    </aside>
+    <article class="page-heading">
+        <div class="overlay-dark"></div>
 
-    <aside>
-        <article class="page-heading">
-            <div class="overlay-dark"></div>
-            <section>
-                <h3>{page.name}</h3>
+        <section>
+            <h3><!-- ?= $page->name; ? --></h3>
 
-                <blockquote class="mb-0">{page.quote}</blockquote>
-                <p>{page.statement}</p>
+            <!-- ? if (isset($page->heading->quote)): ? -->
+            <blockquote class="mb-0"><?= $page->heading->quote; ? --></blockquote>
+            <!-- ? endif; ? -->
+            <!-- ? if (isset($page->heading->statement)): ? -->
+            <p><!-- ?= $heading->statement; ? --></p>
+            <!-- ? endif; ? -->
 
-                <p>{page.description}</p>
-            </section>
-        </article>
+            <!-- ? if (isset($page->heading->summary)) ? -->
+            <p><!-- ?= $page->heading->summary; ? --></p>
+            <!-- ? endif; ? -->
+        </section>
+    </article>
 
-        <div class="bg-white">
-            <!-- profile admin -->
-            <!-- activities admin -->
-            <!-- blog admin -->
-            <!-- showcase admin -->
-        </div>
-    </aside>
+    <div>
+        <aside class="offcanvas offcanvas-start" id="dashboardSidebar">
+
+<header class="offcanvas-header">
+    <h3><!-- ?= $page->sidebar->title; ? -->}</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+</header>
+
+<div class="offcanvas-body">
+    <nav class="nav flex-column">
+    <!-- ? foreach ($page->sidebar->nav as $link): ? -->
+        <a class="nav-item nav-link" href="<!-- ?= $link->href; ? -->"><!-- ?= $link->label; ?></a>
+    <!-- ? endforeach; unset($link); ? -->
+    </nav>
+</div>
+
+        </aside>
+
+        <aside>
+            <div class="bg-white">
+
+<!-- ? $page = $active->mode->page; ? -->
+
+<!-- ? switch($page): ? -->
+<!-- ? case "stats": ? -->
+
+    <!-- ? if ($state == "blacklist"): ? -->
+        <span>
+            So, it's helpful to know that this is a restricted section of the website, but since you're
+            here, you'd might like to know, these are some of the things I've learned about you.
+
+            I can even learn any things such as, [], we could do things like [].
+        </span>
+    <!-- ? endif; ? -->
+<!-- ? break; case "login": -->
+<section>
+    <h3><?= $page->title; ?></h3>
+
+    <!-- if ($state == "whitelist"): -->
+    <p>
+    </p>
+    <!-- elseif ($state == "blacklist"): -->
+    <p>
+        <span>
+            Let me see if I got this right. You are <!-- ?= $profile->portfolio->name; ? -->, and you are
+            still trying to get past me? I'm sorry, but this is a restricted area. Like a safe-space, but for admins.
+        </span>
+
+        <span>
+            
+        </span>
+    </p>
+    <p>
+        <span>I'm going to have to ask you to leave.</span>
+        <span>Don't force me to throw you out.</span>
+        <span>I'm not going to ask again.</span>
+    </p>
+    <!-- elseif ($state == "default"): -->
+    <p>Hmm.. My memory is failing me and I can't seem to work out for sure who you are.</p>
+    <p>You're going to have to provide the standard login info! Username and password, please.</p>
+
+    <form method="POST">
+        <div class="input-group"></div>
+        <div class="button-group"></div>
+    </form>
+    <!-- endif; -->
+</section>
+<!-- ? break; case "logout": break;
+    case "recover": break;
+    case "users": break;
+    case "profile-admin": break;
+    case "activities-admin": break;
+    case "blog-admin": break;
+    case "showcase-admin": break;
+    default: break; ? -->
+<!-- ? endswitch; unset($page); ? -->
+
+            </div>
+        </aside>
+    </div>
 </section>
