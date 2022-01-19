@@ -57,26 +57,27 @@
 <section>
     <h3><?= $page->title; ?></h3>
 
-    <!-- if ($state == "whitelist"): -->
+    <!-- if ($profile->state == "listening"):
+        <!-- if (isset($profile->wallet->admin)): -->
     <p>
+        <span>Yes! Of course! Surely I knew that.</span>
+        <span>Anyway, I'll get out of your way and let you handle your business.</span>
     </p>
-    <!-- elseif ($state == "blacklist"): -->
+        <!-- else: -->
     <p>
+            <!-- if ($profile->portfolio->name == "Guest")-->
         <span>
-            Let me see if I got this right. You are <!-- ?= $profile->portfolio->name; ? -->, and you are
-            still trying to get past me? I'm sorry, but this is a restricted area. Like a safe-space, but for admins.
+            I don't even know you. You probably shouldn't try to login places you haven't been registered with.
         </span>
-
+            <!-- else: -->
         <span>
-            
+            Let me see if I got this right. You are <!-- ?= $profile->portfolio->name; ? -->, but you don't have
+            your badge? I'm sorry, but this is a restricted area. Like a safe-space, but for admins.
         </span>
+            <!-- endif; -->
     </p>
-    <p>
-        <span>I'm going to have to ask you to leave.</span>
-        <span>Don't force me to throw you out.</span>
-        <span>I'm not going to ask again.</span>
-    </p>
-    <!-- elseif ($state == "default"): -->
+        <!-- endif; -->
+    <!-- elseif ($profile->state == "default"): -->
     <p>Hmm.. My memory is failing me and I can't seem to work out for sure who you are.</p>
     <p>You're going to have to provide the standard login info! Username and password, please.</p>
 
