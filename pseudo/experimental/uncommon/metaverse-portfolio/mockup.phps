@@ -1,6 +1,15 @@
 <?php
 
-$profile = new Profile;
+/*
+
+Metaverse Profiler
+v0.0.1
+1/18/2022
+
+Upgrading the profiler to incorporate economic representations could be a win-win
+for me evaluating and bettering aspects of my lifestyles and behaviours.
+
+*/
 
 class Profile {
 
